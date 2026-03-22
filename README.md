@@ -20,9 +20,10 @@
 ---
 ### 🧪 Testes
 
-- Testes unitários com **JUnit** e **Mockito** (@Mock e @InjectMocks)
-- Testes de endpoints com **MockMvc**
-- Testes de integração com **@MockitoBean**
+- Testes unitários com **JUnit**
+- Testes da camada de controllers com **MockMvc** e **@MockitoBean**  
+- Testes da camada de services com **@Mock** e **@InjectMocks**
+- Testes de integração com **MockMvc**
 
 ---
 ### 🧱 Entidades
@@ -56,10 +57,33 @@
 ---
 ### 🔐 Regras de negócio
 
+**🧑 Nome**
+
+- Deve conter no mínimo duas strings com no mínimo duas letras cada
+- No total deve conter de 5 a 50 caracteres
+- Aceita apenas letras | não aceita números ou símbolos
+
+**📧 E-mail**
+
+- É único → um mesmo e-mail não pode ser cadastrado para dois ou mais usuários
+- Deve ter o formato de um e-mail válido, com o uso de @ por exemplo
+
+**⏳ Status**
+
 - Status aceitos: ***EM_ANDAMENTO***, ***PENDENTE*** ou ***CONCLUIDA***
 - Uma tarefa só poderá ter seu status alterado para ***CONCLUIDA*** quando todas as subtarefas relacionadas a ela também estiverem com status de ***CONCLUIDA***
 - Após alterar o status de uma tarefa para ***CONCLUIDA***, não poderá se criar novas subtarefas a ela
 - Após alterar o status de uma tarefa ou subtarefa para ***CONCLUIDA***, o status não poderá ser alterado novamente
+
+**✏️ Titulo**
+
+- Deve conter de 3 a 100 caracteres
+- Aceita letras, números e símbolos
+
+**📝 Descrição**
+
+- Não é obrigatória, mas caso seja informada, deverá conter no máximo 500 caracteres
+- Aceita letras, números e símbolos
 
 ---
 ### ⚙️ Configurações
