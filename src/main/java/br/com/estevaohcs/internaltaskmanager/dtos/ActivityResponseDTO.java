@@ -2,6 +2,7 @@ package br.com.estevaohcs.internaltaskmanager.dtos;
 
 import br.com.estevaohcs.internaltaskmanager.entities.Activity;
 import br.com.estevaohcs.internaltaskmanager.entities.enums.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,11 @@ public abstract class ActivityResponseDTO {
     private String titulo;
     private String descricao;
     private Status status;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     private Instant dataCriacao;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     private Instant dataConclusao;
 
     public ActivityResponseDTO(Activity activity) {

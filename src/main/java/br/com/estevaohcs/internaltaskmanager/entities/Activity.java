@@ -37,10 +37,10 @@ public abstract class Activity implements Serializable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Instant dataCriacao;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Instant dataConclusao;
 
     public Activity(ActivityRequestDTO activityRequestDTO) {
