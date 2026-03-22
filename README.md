@@ -38,14 +38,14 @@
 **👤 usuarios**
 
 - `GET /usuarios/{id}` → busca um usuário pelo seu id
-- `POST /usuarios` → cria uma novo usuário
+- `POST /usuarios` → cria um usuário
 
 **✅ tarefas**
 
 - `GET /tarefas` → lista todas as tarefas
 - `GET /tarefas?status=STATUS` → lista todas as tarefas de acordo com o filtro de status
 - `GET /tarefas?status=STATUS&page=0&size=5&sort=titulo` → lista todas as tarefas de acordo com os filtros de status e paginação
-- `POST /tarefas` → cria um tarefa
+- `POST /tarefas` → cria uma tarefa
 - `PATCH /tarefas/{id}/status` → altera o status da tarefa
 
 **📌 subtarefas**
