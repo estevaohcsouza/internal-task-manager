@@ -1,8 +1,7 @@
 package br.com.estevaohcs.internaltaskmanager.controllers;
 
 import br.com.estevaohcs.internaltaskmanager.dtos.StatusRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.TaskRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.TaskResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.TaskDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.enums.Status;
 import br.com.estevaohcs.internaltaskmanager.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,10 +31,10 @@ public class TaskController {
             description = "Como se trata de uma paginação, pode se alterar o número da página, a quantidade de tarefas por página e a ordenação<br>" +
                     "Os valores padrões são: primeira página, 5 tarefas por página e ordenado pelo título das tarefas<br>" +
                     "Também é possível filtrar pelo status da tarefa e caso não seja escolhida uma opção, irá buscar todas as tarefas registradas")
-    public ResponseEntity<Page<TaskResponseDTO>> findAll(@PageableDefault(page = 0, size = 5, sort = "titulo") Pageable pageable,
-                                                         @RequestParam(required = false) Status status) {
-        Page<TaskResponseDTO> taskResponseDTOs = service.findAll(pageable, status);
-        return ResponseEntity.ok().body(taskResponseDTOs);
+    public ResponseEntity<Page<TaskDTO>> findAll(@PageableDefault(page = 0, size = 5, sort = "titulo") Pageable pageable,
+                                                 @RequestParam(required = false) Status status) {
+        Page<TaskDTO> dtos = service.findAll(pageable, status);
+        return ResponseEntity.ok().body(dtos);
     }
 
     @PostMapping
@@ -45,10 +44,10 @@ public class TaskController {
                     "O 'titulo' deve ter de 3 a 100 caracteres<br>" +
                     "Se houver 'descricao', deve ter no máximo 500 caracteres<br>" +
                     "Valores aceitos como 'status': 'EM_ANDAMENTO', 'PENDENTE', ou 'CONCLUIDA'")
-    public ResponseEntity<TaskResponseDTO> insert(@Valid @RequestBody TaskRequestDTO taskRequestDTO) {
-        TaskResponseDTO taskResponseDTO = service.insert(taskRequestDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(taskResponseDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(taskResponseDTO);
+    public ResponseEntity<TaskDTO> insert(@Valid @RequestBody TaskDTO dto) {
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @PatchMapping("/{id}/status")
@@ -59,9 +58,9 @@ public class TaskController {
                     "Valores aceitos como 'status': 'EM_ANDAMENTO', 'PENDENTE', ou 'CONCLUIDA'<br>" +
                     "Só será possível alterar o 'status' para 'CONCLUIDA' caso todas as subtarefas desta tarefa também estejam com 'status' de 'CONCLUIDA'<br>" +
                     "Após alterar o 'status' para 'CONCLUIDA' não será mais possível alterar o 'status' desta tarefa novamente")
-    public ResponseEntity<TaskResponseDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody StatusRequestDTO statusRequestDTO) {
-        TaskResponseDTO taskResponseDTO = service.updateStatus(id, statusRequestDTO.getStatus());
-        return ResponseEntity.ok().body(taskResponseDTO);
+    public ResponseEntity<TaskDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody StatusRequestDTO statusRequestDTO) {
+        TaskDTO dto = service.updateStatus(id, statusRequestDTO.getStatus());
+        return ResponseEntity.ok().body(dto);
     }
 
 }

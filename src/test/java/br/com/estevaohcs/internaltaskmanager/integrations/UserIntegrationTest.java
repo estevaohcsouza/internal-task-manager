@@ -1,6 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.integrations;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.UserRequestDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.UserDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.User;
 import br.com.estevaohcs.internaltaskmanager.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,13 +69,13 @@ class UserIntegrationTest {
     @Test
     @DisplayName("POST - se forem passados valores válidos a requisição deve retornar 201")
     void createUserShouldReturn201WhenValid() throws Exception {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joao@email.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joao@email.com");
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON.toString())
-                        .content(objectMapper.writeValueAsString(userRequestDTO)))
+                        .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nome").value("João da Silva"))
@@ -99,26 +99,26 @@ class UserIntegrationTest {
     @Test
     @DisplayName("POST - se o nome for inválido retornar 400")
     void createUserShouldReturn400WhenInvalidName() throws Exception {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João");
-        userRequestDTO.setEmail("joao@gmail.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João");
+        requestDTO.setEmail("joao@gmail.com");
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON.toString())
-                        .content(objectMapper.writeValueAsString(userRequestDTO)))
+                        .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     @DisplayName("POST - se o email for inválido retornar 400")
     void createUserShouldReturn400WhenInvalidEmail() throws Exception {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joaogmail.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joaogmail.com");
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON.toString())
-                        .content(objectMapper.writeValueAsString(userRequestDTO)))
+                        .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isBadRequest());
     }
 

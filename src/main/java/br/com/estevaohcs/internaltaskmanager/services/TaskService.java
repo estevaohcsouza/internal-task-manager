@@ -1,7 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.services;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.TaskRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.TaskResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.TaskDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.Task;
 import br.com.estevaohcs.internaltaskmanager.entities.enums.Status;
 import br.com.estevaohcs.internaltaskmanager.repositories.SubtaskRepository;
@@ -31,7 +30,7 @@ public class TaskService {
     private UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public Page<TaskResponseDTO> findAll(Pageable pageable, Status status) {
+    public Page<TaskDTO> findAll(Pageable pageable, Status status) {
         Page<Task> tasks;
 
         if (status != null) {
@@ -40,20 +39,20 @@ public class TaskService {
             tasks = taskRepository.findAll(pageable);
         }
 
-        return tasks.map(TaskResponseDTO::new);
+        return tasks.map(TaskDTO::new);
     }
 
     @Transactional
-    public TaskResponseDTO insert(TaskRequestDTO taskRequestDTO) {
-        userRepository.findById(taskRequestDTO.getUsuarioId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+    public TaskDTO insert(TaskDTO dto) {
+        userRepository.findById(dto.getUsuarioId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
-        Task task = new Task(taskRequestDTO);
+        Task task = new Task(dto);
         task = taskRepository.save(task);
-        return new TaskResponseDTO(task);
+        return new TaskDTO(task);
     }
 
     @Transactional
-    public TaskResponseDTO updateStatus(UUID taskId, Status status) {
+    public TaskDTO updateStatus(UUID taskId, Status status) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
 
         if (task.getStatus().equals(Status.CONCLUIDA)) {
@@ -67,7 +66,7 @@ public class TaskService {
         }
 
         task = taskRepository.save(task);
-        return new TaskResponseDTO(task);
+        return new TaskDTO(task);
     }
 
     private void verifySubtasksStatus(UUID taskId, Task task) {

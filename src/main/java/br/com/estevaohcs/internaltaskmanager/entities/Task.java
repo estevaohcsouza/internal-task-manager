@@ -1,6 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.entities;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.TaskRequestDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.TaskDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -20,9 +20,9 @@ public class Task extends Activity {
     @Column(nullable = false)
     private UUID usuarioId;
 
-    public Task(TaskRequestDTO taskRequestDTO) {
-        super(taskRequestDTO);
-        this.usuarioId = taskRequestDTO.getUsuarioId();
+    public Task(TaskDTO dto) {
+        super(dto);
+        this.usuarioId = dto.getUsuarioId();
     }
 
 }

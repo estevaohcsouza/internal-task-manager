@@ -1,7 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.services;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.SubtaskRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.SubtaskResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.SubtaskDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.Subtask;
 import br.com.estevaohcs.internaltaskmanager.entities.Task;
 import br.com.estevaohcs.internaltaskmanager.entities.enums.Status;
@@ -28,29 +27,29 @@ public class SubtaskService {
     private TaskRepository taskRepository;
 
     @Transactional(readOnly = true)
-    public Page<SubtaskResponseDTO> findByTaskId(Pageable pageable, UUID taskId) {
+    public Page<SubtaskDTO> findByTaskId(Pageable pageable, UUID taskId) {
         taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada!"));
 
         Page<Subtask> subtasks = subtaskRepository.findByTarefaId(pageable, taskId);
-        return subtasks.map(SubtaskResponseDTO::new);
+        return subtasks.map(SubtaskDTO::new);
     }
 
     @Transactional
-    public SubtaskResponseDTO insert(UUID taskId, SubtaskRequestDTO subtaskRequestDTO) {
+    public SubtaskDTO insert(UUID taskId, SubtaskDTO dto) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada!"));
 
         if (task.getStatus().equals(Status.CONCLUIDA)) {
             throw new StatusDependencyException("Não é possível adicionar uma nova subtarefa para uma tarefa concluída!");
         }
 
-        Subtask subtask = new Subtask(subtaskRequestDTO);
+        Subtask subtask = new Subtask(dto);
         subtask.setTarefaId(taskId);
         subtask = subtaskRepository.save(subtask);
-        return new SubtaskResponseDTO(subtask);
+        return new SubtaskDTO(subtask);
     }
 
     @Transactional
-    public SubtaskResponseDTO updateStatus(UUID id, Status status) {
+    public SubtaskDTO updateStatus(UUID id, Status status) {
         Subtask subtask = subtaskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Subtarefa não encontrada!"));
 
         if (subtask.getStatus().equals(Status.CONCLUIDA)) {
@@ -63,7 +62,7 @@ public class SubtaskService {
 
         subtask.setStatus(status);
         subtask = subtaskRepository.save(subtask);
-        return new SubtaskResponseDTO(subtask);
+        return new SubtaskDTO(subtask);
     }
 
 }

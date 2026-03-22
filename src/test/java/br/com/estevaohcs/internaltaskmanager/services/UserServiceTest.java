@@ -1,7 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.services;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.UserRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.UserResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.UserDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.User;
 import br.com.estevaohcs.internaltaskmanager.repositories.UserRepository;
 import br.com.estevaohcs.internaltaskmanager.services.exceptions.DataBaseException;
@@ -34,19 +33,19 @@ public class UserServiceTest {
     void findByIdShouldReturnUserResponseDTOWhenUserExists() {
         UUID id = UUID.randomUUID();
 
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joao@email.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joao@email.com");
 
-        User user = new User(userRequestDTO);
+        User user = new User(requestDTO);
 
         when(repository.findById(id)).thenReturn(Optional.of(user));
 
-        UserResponseDTO userResponseDTO = service.findById(id);
+        UserDTO responseDTO = service.findById(id);
 
-        assertNotNull(userResponseDTO);
-        assertEquals(userRequestDTO.getNome(), userResponseDTO.getNome());
-        assertEquals(userRequestDTO.getEmail(), userResponseDTO.getEmail());
+        assertNotNull(responseDTO);
+        assertEquals(requestDTO.getNome(), responseDTO.getNome());
+        assertEquals(requestDTO.getEmail(), responseDTO.getEmail());
     }
 
     @Test
@@ -64,33 +63,33 @@ public class UserServiceTest {
     @Test
     @DisplayName("POST - se forem passados valores válidos a requisição deve retornar UserResponseDTO")
     void createShouldReturnUserResponseDTOWhenValidData() {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joao@email.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joao@email.com");
 
-        when(repository.existsByEmail(userRequestDTO.getEmail())).thenReturn(false);
+        when(repository.existsByEmail(requestDTO.getEmail())).thenReturn(false);
 
-        User user = new User(userRequestDTO);
+        User user = new User(requestDTO);
         when(repository.save(any(User.class))).thenReturn(user);
 
-        UserResponseDTO userResponseDTO = service.insert(userRequestDTO);
+        UserDTO responseDTO = service.insert(requestDTO);
 
-        assertNotNull(userResponseDTO);
-        assertEquals(userRequestDTO.getNome(), userResponseDTO.getNome());
-        assertEquals(userRequestDTO.getEmail(), userResponseDTO.getEmail());
+        assertNotNull(responseDTO);
+        assertEquals(requestDTO.getNome(), responseDTO.getNome());
+        assertEquals(requestDTO.getEmail(), responseDTO.getEmail());
     }
 
     @Test
     @DisplayName("POST - se o email estiver cadastrado para algum usuário deve retornar DataBaseException")
     void createShouldThrowDataBaseExceptionWhenEmailAlreadyExists() {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joao@email.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joao@email.com");
 
-        when(repository.existsByEmail(userRequestDTO.getEmail())).thenReturn(true);
+        when(repository.existsByEmail(requestDTO.getEmail())).thenReturn(true);
 
         assertThrows(DataBaseException.class, () -> {
-            service.insert(userRequestDTO);
+            service.insert(requestDTO);
         });
     }
 

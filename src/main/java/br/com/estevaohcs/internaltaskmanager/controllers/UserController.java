@@ -1,7 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.controllers;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.UserRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.UserResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.UserDTO;
 import br.com.estevaohcs.internaltaskmanager.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,9 +25,9 @@ public class UserController {
     @Operation(summary = "Busca um único usuário pelo seu id",
             description = "Parâmetro obrigatório: id do usuário (usuarioId)<br>" +
                     "O 'id' (usuarioId) deve ser referente ao id de um usuário existente")
-    public ResponseEntity<UserResponseDTO> findById(@PathVariable UUID id) {
-        UserResponseDTO userResponseDTO = service.findById(id);
-        return ResponseEntity.ok().body(userResponseDTO);
+    public ResponseEntity<UserDTO> findById(@PathVariable UUID id) {
+        UserDTO dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
@@ -36,10 +35,10 @@ public class UserController {
             description = "Campos obrigatórios: 'nome' e 'email'<br>" +
                     "O 'nome' deve ser composto por no mínimo duas strings com no mínimo dois caracteres cada e conter apenas letras<br>" +
                     "O 'email' deve ser um e-mail válido e não pode se repetir")
-    public ResponseEntity<UserResponseDTO> insert(@Valid @RequestBody UserRequestDTO userRequestDTO) {
-        UserResponseDTO userResponseDTO = service.insert(userRequestDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userResponseDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(userResponseDTO);
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO dto) {
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
 }

@@ -18,7 +18,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se os atributos receberem valores válidos não deve falhar")
     void shouldPassValidationWhenValidData() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("Título da tarefa #123");
         dto.setDescricao("Descrição da tarefa #123");
         dto.setStatus(Status.PENDENTE);
@@ -32,7 +32,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se o titulo for vazio deve falhar")
     void shouldFailWhenTitleIsEmpty() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("");
         dto.setDescricao("Descrição da tarefa #123");
         dto.setStatus(Status.PENDENTE);
@@ -46,7 +46,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se o titulo for null deve falhar")
     void shouldFailWhenTitleIsNull() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setDescricao("Descrição da tarefa #123");
         dto.setStatus(Status.PENDENTE);
         dto.setUsuarioId(UUID.randomUUID());
@@ -59,7 +59,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se o titulo receber mais de 100 caracteres deve falhar")
     void shouldFailWhenTitleIsBiggerThen100Characters() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("T".repeat(50) + " " + "T".repeat(50));
         dto.setDescricao("Descrição da tarefa #123");
         dto.setStatus(Status.PENDENTE);
@@ -73,7 +73,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se o titulo receber menos de 3 caracteres deve falhar")
     void shouldFailWhenTitleIsShorterThen3Characters() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("T");
         dto.setDescricao("Descrição da tarefa #123");
         dto.setStatus(Status.PENDENTE);
@@ -87,7 +87,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se a descrição receber mais de 500 caracteres deve falhar")
     void shouldFailWhenDescriptionIsBiggerThen500Characters() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("Título da tarefa #123");
         dto.setDescricao("T".repeat(300) + " " + "T".repeat(200));
         dto.setStatus(Status.PENDENTE);
@@ -101,7 +101,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se o status for null deve falhar")
     void shouldFailWhenStatusIsNull() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("Título da tarefa #123");
         dto.setDescricao("Descrição da tarefa #123");
         dto.setUsuarioId(UUID.randomUUID());
@@ -114,7 +114,7 @@ public class TaskRequestDTOTest {
     @Test
     @DisplayName("Se o usuarioId for null deve falhar")
     void shouldFailWhenUserIdIsNull() {
-        TaskRequestDTO dto = new TaskRequestDTO();
+        TaskDTO dto = new TaskDTO();
         dto.setTitulo("Título da tarefa #123");
         dto.setDescricao("Descrição da tarefa #123");
         dto.setStatus(Status.PENDENTE);

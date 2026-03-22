@@ -1,7 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.controllers;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.UserRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.UserResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.UserDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.User;
 import br.com.estevaohcs.internaltaskmanager.services.UserService;
 import br.com.estevaohcs.internaltaskmanager.services.exceptions.DataBaseException;
@@ -47,9 +46,9 @@ class UserControllerTest {
         when(user.getNome()).thenReturn("João da Silva");
         when(user.getEmail()).thenReturn("joao@email.com");
 
-        UserResponseDTO userResponseDTO = new UserResponseDTO(user);
+        UserDTO responseDTO = new UserDTO(user);
 
-        when(service.findById(id)).thenReturn(userResponseDTO);
+        when(service.findById(id)).thenReturn(responseDTO);
 
         mockMvc.perform(get("/usuarios/{id}", id))
                 .andExpect(status().isOk())
@@ -74,22 +73,22 @@ class UserControllerTest {
     void createUserShouldReturn201WhenValid() throws Exception {
         UUID id = UUID.randomUUID();
 
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joao@email.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joao@email.com");
 
         User user = mock(User.class);
         when(user.getId()).thenReturn(id);
-        when(user.getNome()).thenReturn(userRequestDTO.getNome());
-        when(user.getEmail()).thenReturn(userRequestDTO.getEmail());
+        when(user.getNome()).thenReturn(requestDTO.getNome());
+        when(user.getEmail()).thenReturn(requestDTO.getEmail());
 
-        UserResponseDTO userResponseDTO = new UserResponseDTO(user);
+        UserDTO responseDTO = new UserDTO(user);
 
-        when(service.insert(any(UserRequestDTO.class))).thenReturn(userResponseDTO);
+        when(service.insert(any(UserDTO.class))).thenReturn(responseDTO);
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON.toString())
-                        .content(objectMapper.writeValueAsString(userRequestDTO)))
+                        .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(id.toString()))
                 .andExpect(jsonPath("$.nome").value("João da Silva"))
@@ -99,16 +98,16 @@ class UserControllerTest {
     @Test
     @DisplayName("POST - se o email estiver cadastrado para algum usuário deve retornar 400")
     void createUserShouldReturn400WhenEmailDuplicated() throws Exception {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setNome("João da Silva");
-        userRequestDTO.setEmail("joao@email.com");
+        UserDTO requestDTO = new UserDTO();
+        requestDTO.setNome("João da Silva");
+        requestDTO.setEmail("joao@email.com");
 
-        when(service.insert(any(UserRequestDTO.class)))
+        when(service.insert(any(UserDTO.class)))
                 .thenThrow(new DataBaseException("E-mail já cadastrado!"));
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON.toString())
-                        .content(objectMapper.writeValueAsString(userRequestDTO)))
+                        .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isBadRequest());
     }
 

@@ -1,7 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.services;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.UserRequestDTO;
-import br.com.estevaohcs.internaltaskmanager.dtos.UserResponseDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.UserDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.User;
 import br.com.estevaohcs.internaltaskmanager.repositories.UserRepository;
 import br.com.estevaohcs.internaltaskmanager.services.exceptions.DataBaseException;
@@ -20,20 +19,20 @@ public class UserService {
     private UserRepository repository;
 
     @Transactional
-    public UserResponseDTO findById(UUID id) {
+    public UserDTO findById(UUID id) {
         Optional<User> user = repository.findById(id);
-        return new UserResponseDTO(user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!")));
+        return new UserDTO(user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!")));
     }
 
     @Transactional
-    public UserResponseDTO insert(UserRequestDTO userRequestDTO) {
-        if (repository.existsByEmail(userRequestDTO.getEmail())) {
+    public UserDTO insert(UserDTO dto) {
+        if (repository.existsByEmail(dto.getEmail())) {
             throw new DataBaseException("E-mail já cadastrado na base de dados!");
         }
 
-        User user = new User(userRequestDTO);
+        User user = new User(dto);
         user = repository.save(user);
-        return new UserResponseDTO(user);
+        return new UserDTO(user);
     }
 
 }

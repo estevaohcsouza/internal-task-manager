@@ -1,6 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.entities;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.SubtaskRequestDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.SubtaskDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -20,8 +20,8 @@ public class Subtask extends Activity {
     @Column(nullable = false)
     private UUID tarefaId;
 
-    public Subtask(SubtaskRequestDTO subtaskRequestDTO) {
-        super(subtaskRequestDTO);
+    public Subtask(SubtaskDTO dto) {
+        super(dto);
     }
 
 }

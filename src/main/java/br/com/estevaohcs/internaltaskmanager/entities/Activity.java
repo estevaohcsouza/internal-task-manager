@@ -1,6 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.entities;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.ActivityRequestDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.ActivityDTO;
 import br.com.estevaohcs.internaltaskmanager.entities.enums.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -43,12 +43,12 @@ public abstract class Activity implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Instant dataConclusao;
 
-    public Activity(ActivityRequestDTO activityRequestDTO) {
-        this.titulo = activityRequestDTO.getTitulo();
-        this.descricao = activityRequestDTO.getDescricao();
-        this.status = activityRequestDTO.getStatus();
+    public Activity(ActivityDTO dto) {
+        this.titulo = dto.getTitulo();
+        this.descricao = dto.getDescricao();
+        this.status = dto.getStatus();
         this.dataCriacao = Instant.now();
-        if (activityRequestDTO.getStatus().equals(Status.CONCLUIDA)) {
+        if (dto.getStatus().equals(Status.CONCLUIDA)) {
             this.dataConclusao = Instant.now();
         }
     }

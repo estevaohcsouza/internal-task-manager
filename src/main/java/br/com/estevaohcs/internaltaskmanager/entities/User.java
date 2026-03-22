@@ -1,6 +1,6 @@
 package br.com.estevaohcs.internaltaskmanager.entities;
 
-import br.com.estevaohcs.internaltaskmanager.dtos.UserRequestDTO;
+import br.com.estevaohcs.internaltaskmanager.dtos.UserDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,9 +33,9 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    public User(UserRequestDTO userRequestDTO) {
-        this.nome = userRequestDTO.getNome();
-        this.email = userRequestDTO.getEmail();
+    public User(UserDTO dto) {
+        this.nome = dto.getNome();
+        this.email = dto.getEmail();
     }
 
     @Override
