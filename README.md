@@ -36,8 +36,9 @@
 ### 📬 Endpoints
 
 **👤 usuarios**
-- `GET /usuarios` → lista todos os usuários
-- `POST /usuarios/{usuarioId}` → cria um usuário
+
+- `GET /usuarios/{id}` → busca um usuário pelo seu id
+- `POST /usuarios` → cria uma novo usuário
 
 **✅ tarefas**
 
@@ -45,14 +46,14 @@
 - `GET /tarefas?status=STATUS` → lista todas as tarefas de acordo com o filtro de status
 - `GET /tarefas?status=STATUS&page=0&size=5&sort=titulo` → lista todas as tarefas de acordo com os filtros de status e paginação
 - `POST /tarefas` → cria um tarefa
-- `PATCH /tarefas/{tarefaId}/status` → altera o status da tarefa
+- `PATCH /tarefas/{id}/status` → altera o status da tarefa
 
 **📌 subtarefas**
 
 - `GET /tarefas/{tarefaId}/subtarefas` → lista todas as subtarefas de uma tarefa
 - `GET /tarefas/{tarefaId}/subtarefas?page=0&size=5&sort=titulo` → lista todas as subtarefas de uma tarefa de acordo com os filtros de paginação
 - `POST /tarefas/{tarefaId}/subtarefas` → cria uma subtarefa para uma tarefa
-- `PATCH /subtarefas/{subtarefaId}/status` → altera o status da subtarefa
+- `PATCH /subtarefas/{id}/status` → altera o status da subtarefa
 
 ---
 ### 🔐 Regras de negócio
